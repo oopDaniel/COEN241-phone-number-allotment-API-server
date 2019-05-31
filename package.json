@@ -1,0 +1,19 @@
+{
+  "name": "phone-number-allotment",
+  "version": "1.0.0",
+  "description": "This is a sample server for phone number allotment. The phone numbers will start from `111-111-1111` and end at `999-999-9999`",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "0.10.1"
+  }
+}

@@ -1,0 +1,186 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a sample server for phone number allotment. The phone numbers\
+    \ will start from `111-111-1111` and end at `999-999-9999`"
+  version: "1.0.0"
+  title: "Phone Number Allotment"
+host: "localhost:3000"
+basePath: "/v1"
+tags:
+- name: "number"
+  description: "Everything about phone number"
+schemes:
+- "http"
+paths:
+  /number:
+    post:
+      tags:
+      - "number"
+      summary: "Take an available number"
+      description: ""
+      operationId: "takeNumber"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "random"
+        description: "Get a random instead of sequential phone number"
+        required: false
+        schema:
+          type: "object"
+          default: { random: false }
+      responses:
+        200:
+          description: "successfully assigned number"
+          schema:
+            type: "object"
+            required:
+            - "success"
+            properties:
+              success:
+                type: "boolean"
+              number:
+                type: "string"
+                example: "123-456-7890"
+        400:
+          description: "Invalid number format"
+      x-swagger-router-controller: "Number"
+  /number/{specifiedNumber}:
+    get:
+      tags:
+      - "number"
+      summary: "Check whether a number is occupied"
+      description: ""
+      operationId: "checkNumber"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "specifiedNumber"
+        in: "path"
+        description: "Associated number for this lookup"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "successfully performed loopup"
+          schema:
+            type: "object"
+            required:
+            - "available"
+            properties:
+              available:
+                type: "boolean"
+        400:
+          description: "Invalid number format"
+      x-swagger-router-controller: "Number"
+    post:
+      tags:
+      - "number"
+      summary: "Specify and take an available number"
+      description: ""
+      operationId: "takeSpecifiedNumber"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "specifiedNumber"
+        in: "path"
+        description: "Associated number for this reservation"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "successfully assigned number. Return with note if the specified number is unavailable."
+          schema:
+            type: "object"
+            required:
+            - "success"
+            properties:
+              success:
+                type: "boolean"
+              number:
+                type: "string"
+                example: "123-456-7890"
+              note:
+                type: "string"
+                example: "Specified number isn't available."
+        400:
+          description: "Invalid number format"
+      x-swagger-router-controller: "Number"
+    delete:
+      tags:
+      - "number"
+      summary: "Restore the previous occupied number"
+      description: "Restore a number that is occupied previously. Do nothing for available\
+        \ number"
+      operationId: "restoreNumber"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "specifiedNumber"
+        in: "path"
+        description: "Associated number for this lookup"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "successfully performed restore"
+          schema:
+            type: "object"
+            required:
+            - "restored"
+            properties:
+              restored:
+                type: "boolean"
+                example: false
+              reason:
+                type: "string"
+                example: "The number is not occupied."
+        400:
+          description: "Invalid number format"
+      x-swagger-router-controller: "Number"
+definitions:
+  inline_response_200_1:
+    required:
+    - "available"
+    properties:
+      available:
+        type: "boolean"
+    example:
+      available: true
+  inline_response_200:
+    required:
+    - "success"
+    properties:
+      success:
+        type: "boolean"
+      number:
+        type: "string"
+        example: "123-456-7890"
+    example:
+      number: "123-456-7890"
+      success: true
+  inline_response_200_2:
+    required:
+    - "restored"
+    properties:
+      restored:
+        type: "boolean"
+        example: false
+      reason:
+        type: "string"
+        example: "The number is not occupied."
+    example:
+      reason: "The number is not occupied."
+      restored: false
