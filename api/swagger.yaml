@@ -22,6 +22,7 @@ paths:
       operationId: "takeNumber"
       consumes:
       - "application/json"
+      - "application/octet-stream"
       produces:
       - "application/json"
       parameters:
@@ -57,6 +58,7 @@ paths:
       operationId: "checkNumber"
       consumes:
       - "application/json"
+      - "application/octet-stream"
       produces:
       - "application/json"
       parameters:
@@ -87,6 +89,7 @@ paths:
       operationId: "takeSpecifiedNumber"
       consumes:
       - "application/json"
+      - "application/octet-stream"
       produces:
       - "application/json"
       parameters:
@@ -124,6 +127,7 @@ paths:
       operationId: "restoreNumber"
       consumes:
       - "application/json"
+      - "application/octet-stream"
       produces:
       - "application/json"
       parameters:
@@ -151,7 +155,7 @@ paths:
           description: "Invalid number format"
       x-swagger-router-controller: "Number"
 definitions:
-  inline_response_200_1:
+  number_occupation_response:
     required:
     - "available"
     properties:
@@ -159,7 +163,7 @@ definitions:
         type: "boolean"
     example:
       available: true
-  inline_response_200:
+  number_reservation_response:
     required:
     - "success"
     properties:
@@ -171,7 +175,7 @@ definitions:
     example:
       number: "123-456-7890"
       success: true
-  inline_response_200_2:
+  number_release_response:
     required:
     - "restored"
     properties:
